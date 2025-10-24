@@ -20,8 +20,24 @@
 
 Universal Tester is an AI-powered test generation tool that automatically creates high-quality JUnit tests for Java and Kotlin projects. It uses Large Language Models (LLMs) to understand your code and generate comprehensive test suites with proper mocking, assertions, and edge case coverage.
 
+## 🔒 Unique Security Feature
+
+**The Key Advantage: Your Code Never Leaves Your Machine!**
+
+Unlike other AI testing tools that send your code to cloud services, Universal Tester supports **Ollama** - a runtime platform that lets you run any open-source LLM (Llama 3.1, Mistral, CodeLlama, DeepSeek, etc.) entirely on your own computer. This means:
+
+- ✅ **Complete Privacy**: Your proprietary source code stays on your machine
+- ✅ **100% Offline**: No internet required for test generation
+- ✅ **Enterprise-Safe**: Complies with strict corporate security policies
+- ✅ **Zero Trust Architecture**: No cloud providers can access your code
+- ✅ **FREE**: No API costs - unlimited test generation at no charge
+- ✅ **Compliance-Ready**: Meets requirements for regulated industries (healthcare, finance, government)
+
+**You Have Options**: While running LLMs locally via Ollama provides maximum security, you can also use Azure OpenAI or Google Gemini if your team prefers cloud-based models. The choice is yours!
+
 ### Key Features
-- ✅ **Multi-LLM Support**: Azure OpenAI, Google Gemini, Ollama
+- ✅ **🔐 Local LLM Support (Ollama)**: Industry's first AI test generator with full offline capability - run any open-source LLM locally
+- ✅ **Multi-LLM Support**: Azure OpenAI, Google Gemini, Ollama (local open-source LLMs) - switch anytime
 - ✅ **Smart Import Detection**: Automatic dependency analysis
 - ✅ **Two Interfaces**: Command-line (CLI) and Web UI
 - ✅ **Java & Kotlin**: Full support for both languages
@@ -33,12 +49,42 @@ Universal Tester is an AI-powered test generation tool that automatically create
 
 ## Installation
 
+## Installation
+
 ### Prerequisites
-- Python 3.8 or higher
+
+**Required:**
+- **Python 3.8 or higher**
+  - ✅ **Tested and Certified on**: Python 3.13.5
+  - 📋 **Should work on**: Python 3.8, 3.9, 3.10, 3.11, 3.12, 3.13+ (based on dependency compatibility)
+  - ⚠️ **Important**: Using Python 3.8+ is required to avoid dependency and compatibility issues
+  - 💡 **Recommendation**: Use Python 3.10+ for best performance
 - pip (Python package manager)
 - LLM API access (Azure OpenAI, Google Gemini, or Ollama)
 
-### Install from PyPI
+**Recommended:**
+- Virtual environment (strongly recommended to avoid dependency conflicts)
+- 4GB RAM minimum
+- Internet connection (for cloud LLM providers)
+
+### Installation Steps
+
+#### Step 1: Create Virtual Environment (Recommended)
+
+Using a virtual environment is **highly recommended** to avoid conflicts with other Python packages:
+
+```bash
+# Create virtual environment
+python -m venv universal-tester-env
+
+# Activate on Windows
+universal-tester-env\Scripts\activate
+
+# Activate on Linux/Mac
+source universal-tester-env/bin/activate
+```
+
+#### Step 2: Install from PyPI
 
 ```bash
 pip install universal-tester
@@ -46,7 +92,7 @@ pip install universal-tester
 
 This installs everything you need - both CLI and Web UI!
 
-### Verify Installation
+#### Step 3: Verify Installation
 
 ```bash
 # Check version
@@ -54,6 +100,9 @@ universal-tester --version
 
 # Check available commands
 universal-tester --help
+
+# Test LLM connectivity (after configuring .env)
+universal-tester --health
 ```
 
 ---
@@ -62,24 +111,25 @@ universal-tester --help
 
 ### 1. Set Up Environment Variables
 
-Create a `.env` file in your working directory:
+Copy the `.env.example` file to `.env` and configure your LLM provider:
 
 ```bash
-# For Azure OpenAI
+# Ollama (FREE - Recommended for local development)
+LLM_PROVIDER=ollama
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_MODEL=llama3.1:8b
+
+# OR for Azure OpenAI
+LLM_PROVIDER=azure_openai
 AZURE_OPENAI_API_KEY=your-api-key
 AZURE_OPENAI_ENDPOINT=https://your-endpoint.openai.azure.com/
 AZURE_OPENAI_API_VERSION=2024-02-15-preview
-AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4
-LLM_PROVIDER=azure
+AZURE_OPENAI_DEPLOYMENT=gpt-4
 
 # OR for Google Gemini
-GOOGLE_API_KEY=your-google-api-key
 LLM_PROVIDER=google
-
-# OR for Ollama (local)
-OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=llama2
-LLM_PROVIDER=ollama
+GOOGLE_API_KEY=your-google-api-key
+GOOGLE_MODEL=gemini-2.0-flash:generateContent
 ```
 
 ### 2. Generate Tests (CLI)
@@ -287,10 +337,100 @@ While in the UI, you can type commands:
 
 4. **Configure .env**
    ```bash
-   OLLAMA_BASE_URL=http://localhost:11434
-   OLLAMA_MODEL=llama2
+   OLLAMA_HOST=http://localhost:11434
+   OLLAMA_MODEL=llama3.1:8b
    LLM_PROVIDER=ollama
    ```
+
+---
+
+## Advanced Configuration
+
+The `.env.example` file contains all available configuration options. Here are the advanced features:
+
+### Test Generation Settings
+
+```bash
+# Maximum LLM auto-fix iterations (1-10, default: 3)
+MAX_ITERATIONS=3
+
+# Skip private method testing
+EXCLUDE_PRIVATE_METHOD_TESTS=false
+
+# Incremental test generation - add only missing tests
+INCREMENTAL_TEST_GENERATION=true
+
+# Focus on specific file during development
+DEVELOPMENT_FOCUS_FILE=none
+# Example: DEVELOPMENT_FOCUS_FILE=UserService.java
+```
+
+### Custom Prompts
+
+Override AI behavior with custom prompts:
+
+```bash
+# Enable custom prompts
+USE_CUSTOM_SYSTEM_PROMPT=false
+USE_CUSTOM_USER_PROMPT_ADDITION=false
+
+# Custom system prompt - completely replace default AI instructions
+CUSTOM_SYSTEM_PROMPT=You are an expert Java testing specialist...
+
+# Custom user prompt addition - append to standard prompts
+CUSTOM_USER_PROMPT_ADDITION=Focus on security testing and edge cases...
+```
+
+**Example Use Cases:**
+
+1. **Security-Focused Testing:**
+```bash
+CUSTOM_SYSTEM_PROMPT=You are a security-focused Java testing expert. Generate comprehensive test suites that prioritize security vulnerabilities, input validation, and secure coding practices.
+CUSTOM_USER_PROMPT_ADDITION=Focus heavily on security testing: SQL injection prevention, XSS protection, input sanitization, authentication/authorization edge cases.
+USE_CUSTOM_SYSTEM_PROMPT=true
+USE_CUSTOM_USER_PROMPT_ADDITION=true
+```
+
+2. **Performance Testing:**
+```bash
+CUSTOM_USER_PROMPT_ADDITION=Include performance tests with timing assertions, memory leak detection, and concurrent execution scenarios.
+USE_CUSTOM_USER_PROMPT_ADDITION=true
+```
+
+3. **Enterprise Integration:**
+```bash
+CUSTOM_USER_PROMPT_ADDITION=Generate tests with @MockBean, @TestContainers, database transactions, message queues, and inter-service communication patterns.
+USE_CUSTOM_USER_PROMPT_ADDITION=true
+```
+
+### LLM Behavior Tuning
+
+```bash
+# Streaming mode (default: false)
+OPENAI_IS_STREAMING=false
+
+# Temperature for creativity (0.0-1.0, default: 0.3)
+OPENAI_TEMPERATURE=0.3
+
+# Request timeout in seconds (default: 60)
+OPENAI_REQUEST_TIMEOUT=60
+
+# Max retry attempts (default: 2)
+OPENAI_MAX_RETRIES=2
+```
+
+### Application Settings
+
+```bash
+# Chainlit UI port (default: 8000)
+CHAINLIT_PORT=8000
+
+# Logging level: DEBUG, INFO, WARNING, ERROR (default: INFO)
+LOG_LEVEL=INFO
+
+# Debug mode - overrides LOG_LEVEL to DEBUG
+DEBUG_MODE=false
+```
 
 ---
 

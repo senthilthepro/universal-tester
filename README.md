@@ -4,15 +4,40 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-**Automatically generate high-quality JUnit tests for Java and Kotlin projects using AI.**
+**Automatically generate high-quality JUnit tests for Java and Kotlin projects using AI - with complete code privacy using local LLMs.**
 
 Universal Tester leverages Large Language Models (LLMs) to understand your code and create comprehensive test suites with proper mocking, assertions, and edge case coverage. It comes with both a **Command-Line Interface (CLI)** and a **Web UI** for maximum flexibility.
+
+## 🔒 Unique Security Feature
+
+## 🔒 Unique Security Feature
+
+**Your Code Never Leaves Your Machine!**
+
+Unlike other AI testing tools that send your code to cloud services, Universal Tester supports **Ollama** - a runtime platform that lets you run powerful open-source LLMs (Llama, Mistral, CodeLlama, etc.) entirely on your own computer.
+
+**Why This Matters:**
+- ✅ **Complete Privacy**: Your proprietary source code stays on your machine
+- ✅ **100% Offline**: No internet required for test generation
+- ✅ **Enterprise-Safe**: Complies with strict corporate security policies
+- ✅ **Zero Trust Architecture**: No cloud providers can access your code
+- ✅ **FREE**: No API costs - unlimited test generation at no charge
+- ✅ **Compliance-Ready**: Meets requirements for regulated industries (healthcare, finance, government)
+
+**You Have Options**: While Ollama provides maximum security through local LLM execution, you can also use Azure OpenAI or Google Gemini if your team prefers cloud-based models.
+
+- ✅ **100% Offline Operation** with Ollama
+- ✅ **No Cloud Uploads** - Your code stays on your machine
+- ✅ **Enterprise-Safe** - Perfect for proprietary and sensitive codebases
+- ✅ **FREE** - No API costs with local models
+- ✅ **Your Choice** - Also supports Azure OpenAI and Google Gemini if preferred
 
 ---
 
 ## 🚀 Features
 
-- ✅ **Multi-LLM Support**: Azure OpenAI, Google Gemini, Ollama
+- ✅ **🔐 Local LLM Support (Ollama)**: Run any open-source LLM locally - your code never leaves your machine
+- ✅ **Multi-LLM Support**: Azure OpenAI, Google Gemini, or Ollama (run LLMs locally/offline)
 - ✅ **Smart Import Detection**: Automatic dependency analysis and import management
 - ✅ **Two Interfaces**: CLI for automation, Web UI for interactive use
 - ✅ **Java & Kotlin**: Full support for both languages
@@ -20,10 +45,40 @@ Universal Tester leverages Large Language Models (LLMs) to understand your code 
 - ✅ **Spring Boot Ready**: Special handling for Spring annotations and dependency injection
 - ✅ **Incremental Testing**: Generate tests for specific files or entire projects
 - ✅ **Context-Aware**: Understands your code structure and dependencies
+- ✅ **No Vendor Lock-in**: Switch between LLM providers anytime
 
 ---
 
 ## 📦 Installation
+
+### Prerequisites
+
+- **Python 3.8+** (Tested and certified on **Python 3.13.5**)
+  - ⚠️ **Important**: Requires Python 3.8 or higher to avoid compatibility issues
+  - ✅ **Certified on**: Python 3.13.5
+  - 📋 **Compatible with**: Python 3.8, 3.9, 3.10, 3.11, 3.12, 3.13+ (based on dependencies)
+- pip (Python package manager)
+- LLM API access (Azure OpenAI, Google Gemini, or Ollama)
+
+### Recommended: Use Virtual Environment
+
+We strongly recommend using a virtual environment to avoid dependency conflicts:
+
+```bash
+# Create virtual environment
+python -m venv universal-tester-env
+
+# Activate on Windows
+universal-tester-env\Scripts\activate
+
+# Activate on Linux/Mac
+source universal-tester-env/bin/activate
+
+# Install universal-tester
+pip install universal-tester
+```
+
+### Install from PyPI
 
 ```bash
 pip install universal-tester
@@ -31,29 +86,36 @@ pip install universal-tester
 
 **That's it!** Both CLI and Web UI are included.
 
+### Verify Installation
+
+```bash
+universal-tester --version
+```
+
 ---
 
 ## 🎯 Quick Start
 
 ### 1. Configure Your LLM Provider
 
-Create a `.env` file:
+Copy `.env.example` to `.env` and configure:
 
 ```bash
-# Azure OpenAI
+# Ollama (FREE - Recommended for local development)
+LLM_PROVIDER=ollama
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_MODEL=llama3.1:8b
+
+# OR Azure OpenAI
+LLM_PROVIDER=azure_openai
 AZURE_OPENAI_API_KEY=your-api-key
 AZURE_OPENAI_ENDPOINT=https://your-endpoint.openai.azure.com/
-AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4
-LLM_PROVIDER=azure
+AZURE_OPENAI_DEPLOYMENT=gpt-4
 
 # OR Google Gemini
-GOOGLE_API_KEY=your-google-api-key
 LLM_PROVIDER=google
-
-# OR Ollama (local - FREE!)
-OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=llama2
-LLM_PROVIDER=ollama
+GOOGLE_API_KEY=your-google-api-key
+GOOGLE_MODEL=gemini-2.0-flash:generateContent
 ```
 
 ### 2. Generate Tests (CLI)

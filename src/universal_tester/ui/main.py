@@ -28,6 +28,10 @@ def main():
     print("⏹️  Press Ctrl+C to stop the server")
     print("")
     
+    # Change to UI directory so Chainlit finds our chainlit.md
+    original_dir = os.getcwd()
+    os.chdir(ui_dir)
+    
     # Launch Chainlit
     try:
         subprocess.run([
@@ -37,14 +41,17 @@ def main():
             "--port", "8000"
         ], check=True)
     except KeyboardInterrupt:
-        print("\n� Shutting down Universal Tester UI...")
+        print("\n🛑 Shutting down Universal Tester UI...")
+        os.chdir(original_dir)
         sys.exit(0)
     except subprocess.CalledProcessError as e:
         print(f"❌ Error launching Chainlit: {e}")
+        os.chdir(original_dir)
         sys.exit(1)
     except FileNotFoundError:
         print("❌ Error: Chainlit not found!")
         print("Please install it with: pip install chainlit")
+        os.chdir(original_dir)
         sys.exit(1)
 
 
