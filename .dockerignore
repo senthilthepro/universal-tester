@@ -1,0 +1,76 @@
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore virtual environments
+chainlit_env/
+chainlit_env_311/
+venv/
+env/
+.env
+.venv
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Ignore output files
+enhanced_junit_tests_output/
+enhanced_junit_tests_output.zip
+*.zip
+
+# Ignore test files (production cleanup)
+test_*.py
+
+# Ignore all script files except deployment scripts
+start*.bat
+start*.ps1
+start*.sh
+fix-*.bat
+network-test.bat
+test-connectivity.bat
+verify-setup.ps1
+cleanup-for-production.bat
+
+# Ignore git files
+.git/
+.gitignore
+
+# Ignore documentation files (except essential ones)
+CUSTOM_PROMPTS.md
+PYTHON_MIGRATION.md
+DEPLOYMENT_QUICKSTART.md
+
+# Ignore Docker files (not needed inside container)
+.dockerignore
+docker-compose.yml
+Dockerfile.ssl-fix
+
+# Ignore environment example files
+.env.example
+.env.examples
+
+# Ignore chainlit runtime files
+.chainlit/
